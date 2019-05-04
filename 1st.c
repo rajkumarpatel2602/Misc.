@@ -2,6 +2,7 @@
 #include<stdint.h>
 
 /* just a comment added */
+/* this is just an another comment */
 
 main()
 {
