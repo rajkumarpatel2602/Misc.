@@ -1,2 +1,3 @@
 change  1 -- test --staged flag
 Testingin git difftool --tool=meld
+commiting modified files with -a
