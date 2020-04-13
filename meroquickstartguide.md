@@ -15,8 +15,8 @@ Following steps will make your access to server hassel free.
   * On right top corner you will see your name, open drop down menu by clicking and choose settings.
   * In the menu on left, click SSH Public Keys, and add your public key (which is generated in step one) right there.
 
-WoW!
-You are all set to fetch mero repo now. ;)
+WoW! :sparkles:
+You are all set to fetch mero repo now. 
 
 ## Cloning Mero
 Getting mero on your system is nothing but firing of below listed commands. let's jump into it.
@@ -35,8 +35,8 @@ All following commands assumes that user is already into it's main source direct
   * ./scripts/m0 make
 2. Running Unit Tests (UTs)
   * sudo ./scripts/m0 run-ut
-  > Feel free to expore other options of this run-ut command. Try : sudo run-ut --help.
-  > sudo access is necessary as inserts relevant kernel modules beforehand.
+   > Feel free to expore other options of this run-ut command. Try : sudo run-ut --help.
+   > sudo access is necessary as inserts relevant kernel modules beforehand.
 3. For kernel space UTs
   * sudo ./scripts/m0 run-kut
 4. Running a system test
