@@ -16,9 +16,17 @@ Following steps will make your access to server hassel free.
   * In the menu on left, click SSH Public Keys, and add your public key (which is generated in step one) right there.
 
 Congratulations!
-You are all set to fetch mero repo.
+You are all set to fetch mero repo now.
 
 ## Cloning Mero
-
+Getting mero on your system is nothing but firing of below listed commands. let's jump into it.
+1. $cd path/to/your/dev/directory
+2. git clone --recursive ssh://g<yourGID>@gerrit.mero.colo.seagate.com:29418/mero
+  * Make sure your replace <yourGID> with your seagate ID number.
+3. Enable some pre-commit hooks required before pushing your changes to remote (command to be run from the parent dir of Mero source).
+  * cd mero && scp -p -P 29418 g<yourGId>@gerrit.mero.colo.seagate.com:hooks/commit-msg .git/hooks
+4. build dependencies
+  * $ cd mero
+  * $ ./scripts/install-build-deps
 
 ## Running the mero and 
