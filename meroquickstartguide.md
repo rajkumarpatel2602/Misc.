@@ -7,9 +7,10 @@ Before jumping on cloning, make sure, you have your VMs setup with specification
 Seagate contributor will be refernecing, cloning and committing code to/from this [Gerrit server](http://gerrit.mero.colo.seagate.com:8080).
 
 Following steps will make your access to server hassel free.
-1. create SSH Public Key on your system.
+
+1. Create SSH Public Key on your system using this detailed guide for [SHA generation](https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key).
 2. Add sha on [Gerrit server](http://gerrit.mero.colo.seagate.com:8080).
-  a. 
+  *
 
 ## Cloning Mero
 ## Running the mero and 
