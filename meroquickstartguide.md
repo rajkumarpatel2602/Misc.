@@ -47,9 +47,9 @@ All following commands assumes that user is already into it's main source direct
   
 KABOOM!!!
   
-#### you're all set
+### You're all set & You're awesome
 
-You're awesome.
+In case of any query feel free to write to our [SUPPORT](support.md).
 
 Let's start without a delay to contribute to seagate's open source initiative and join this movement with us keeping a common goal of making data storage better, more efficient and more accessible.
 
