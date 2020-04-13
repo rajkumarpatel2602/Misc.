@@ -41,6 +41,7 @@ All following commands assumes that user is already into it's main source direct
 3. For kernel space UTs
   * sudo ./scripts/m0 run-kut
 4. Running a system test
+  As an example for clovis module system test can be run using following command :
   * sudo ./clovis/st/utils/clovis_sync_replication_st.sh
 
 
