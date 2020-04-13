@@ -44,5 +44,14 @@ All following commands assumes that user is already into it's main source direct
     
    As an example for clovis module system test can be run using following command :
   * sudo ./clovis/st/utils/clovis_sync_replication_st.sh
+  
+KABOOM!!!
+  
+#### you're all set
 
+You're awesome.
+
+Let's start without a delay to contribute to seagate's open source initiative and join this movement with us keeping a common goal of making data storage better, more efficient and more accessible.
+
+Seagate welcomes You! :relaxed:
 
