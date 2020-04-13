@@ -35,9 +35,11 @@ All following commands assumes that user is already into it's main source direct
   * ./scripts/m0 make
 2. Running Unit Tests (UTs)
   * sudo ./scripts/m0 run-ut
-  just one commnad is okay to run all the UTs, but feel free to expore other options of this run-ut command. Try : sudo run-ut --help.
+  > Feel free to expore other options of this run-ut command. Try : sudo run-ut --help.
+  > sudo access is necessary as inserts relevant kernel modules beforehand.
 3. For kernel space UTs
   * sudo ./scripts/m0 run-kut
 4. Running a system test
   * sudo ./clovis/st/utils/clovis_sync_replication_st.sh
+
 
