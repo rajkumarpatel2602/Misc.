@@ -15,8 +15,8 @@ Following steps will make your access to server hassel free.
   * On right top corner you will see your name, open drop down menu by clicking and choose settings.
   * In the menu on left, click SSH Public Keys, and add your public key (which is generated in step one) right there.
 
-Congratulations!
-You are all set to fetch mero repo now.
+WoW!
+You are all set to fetch mero repo now. ;)
 
 ## Cloning Mero
 Getting mero on your system is nothing but firing of below listed commands. let's jump into it.
@@ -27,6 +27,17 @@ Getting mero on your system is nothing but firing of below listed commands. let'
   * cd mero && scp -p -P 29418 g<yourGId>@gerrit.mero.colo.seagate.com:hooks/commit-msg .git/hooks
 4. build dependencies
   * $ cd mero
-  * $ ./scripts/install-build-deps
+  * $ ./scripts/install-build-deps (TBD incase of packages are not present)
 
-## Running the mero and 
+## Compiliation and Running Unit Test
+All following commands assumes that user is already into it's main source directory.
+1. building mero
+  * ./scripts/m0 make
+2. Running Unit Tests (UTs)
+  * sudo ./scripts/m0 run-ut
+  just one commnad is okay to run all the UTs, but feel free to expore other options of this run-ut command. Try : sudo run-ut --help.
+3. For kernel space UTs
+  * sudo ./scripts/m0 run-kut
+4. Running a system test
+  * sudo ./clovis/st/utils/clovis_sync_replication_st.sh
+
