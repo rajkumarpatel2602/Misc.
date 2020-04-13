@@ -34,7 +34,8 @@ All following commands assumes that user is already into it's main source direct
 1. building mero
   * ./scripts/m0 make
 2. Running Unit Tests (UTs)
-  * sudo ./scripts/m0 run-ut (Feel free to expore other options of this run-ut command. Try : sudo run-ut --help)
+  * sudo ./scripts/m0 run-ut
+    > Feel free to expore other options of this run-ut command. Try : sudo run-ut --help
     > sudo access is necessary as inserts relevant kernel modules beforehand.
 3. For kernel space UTs
   * sudo ./scripts/m0 run-kut
