@@ -1,0 +1,20 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "debug daos",
+            "type": "cppdbg",
+            "request": "launch",
+            "url": "ssc-vm-2051.colo.seagate.com:9999",
+            "cwd": "${workspaceFolder}",
+            "remote": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/bin/gdb",
+            "valueTargetting": "parseTest",
+            "program": "/root/daos_src/daos/kvs_test"
+        }
+    ]
+}
