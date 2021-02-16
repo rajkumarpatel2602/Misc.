@@ -1,25 +1,6 @@
 /**
- * Example test
- *
- * Change POOL/CONT/SVCL defines below.
- * Pool should be created via 'dmg pool create'.
- * e.g.:
- * $ dmg pool create -s=10GB
- * Creating DAOS pool with 10 GB SCM and 0 B NVMe storage (100.00 % ratio)
- * Pool-create command SUCCEEDED: UUID: f8c9f6bd-f716-4955-8b20-fb901a7dee45, Service replicas: 0
- *
- * Returned UUID and SVCL should be populated below.
- * Container should be created via 'daos cont create' against the pool.
- * e.g.:
- * $ daos cont create --pool=f8c9f6bd-f716-4955-8b20-fb901a7dee45 --svc=0
- * Successfully created container 85579c95-f614-45b2-9cfe-6b0a10de71e9
- *
- * To compile the test:
- * $ gcc -o test -L${DAOS_PATH}/lib64 -I${DAOS_PATH}/include -ldaos -lgurt -ldaos_common -luuid ./test.c
- *
- * Then add ${DAOS_PATH}/lib64 to LD_LIBRARY_PATH to run the test case.
+ * Example kv store
  */
-
 #include <daos.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -29,8 +10,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-/** local task information */
-static char          node[ 128 ] = "unknown";
+static char          node[ 128 ] = "new_node";
 static daos_handle_t poh;
 static daos_handle_t coh;
 static int           rank, rankn;
@@ -47,43 +27,58 @@ do {                                                            \
                 FAIL(__VA_ARGS__);                              \
 } while (0)
 
-#define ENUM_DESC_BUF 512
-#define ENUM_DESC_NR  5
-
 enum
 {
    OBJ_DKEY,
    OBJ_AKEY
 };
 
-//char key1[] = "key1";
-//char val1[] = "val1";
+#define ENUM_DESC_BUF 512
+#define ENUM_DESC_NR  5
+
 
 /** What to write to the object */
-#define NR_ENTRY 5
+#define NR_ENTRY 7
 
-char *key[ NR_ENTRY ] = { "key1", "key2", "key3", "key4", "key5" };
-char *val[ NR_ENTRY ] = { "val1", "val2", "val3", "val4", "val5" };
+char *key[ NR_ENTRY ] = { "key1", "key2", "key3", "key4", "key5", "key6", "key7"};
+char *val[ NR_ENTRY ] = { "val1", "val2", "val3", "val4", "val5", "val6", "val7"};
 
 #define BUFLEN sizeof(val[0])
 
-static void dts_buf_render( char *buf, unsigned int buf_len )
+static void list_keys( daos_handle_t oh, int *num_keys )
 {
-   int nr = 'z' - 'a' + 1;
-   int i;
+   char            *buf;
+   daos_key_desc_t kds[ ENUM_DESC_NR ];
+   daos_anchor_t   anchor = { 0 };
+   int             key_nr = 0;
+   d_sg_list_t     sgl;
+   d_iov_t         sg_iov;
 
-   for ( i = 0; i < buf_len - 1; i++ )
+   buf = malloc( ENUM_DESC_BUF );
+   d_iov_set( &sg_iov, buf, ENUM_DESC_BUF );
+   sgl.sg_nr     = 1;
+   sgl.sg_nr_out = 0;
+   sgl.sg_iovs   = &sg_iov;
+
+   while ( !daos_anchor_is_eof( &anchor ) )
    {
-      int randv = rand( ) % ( 2 * nr );
+      uint32_t nr = ENUM_DESC_NR;
+      int      rc;
 
-      if ( randv < nr )
-         buf[ i ] = 'a' + randv;
-      else
-         buf[ i ] = 'A' + ( randv - nr );
+      memset( buf, 0, ENUM_DESC_BUF );
+      rc = daos_kv_list( oh, DAOS_TX_NONE, &nr, kds, &sgl, &anchor,
+                         NULL );
+      ASSERT( rc == 0, "KV list failed with %d", rc );
+
+      if ( nr == 0 )
+         continue;
+
+      key_nr += nr;
    }
 
-   buf[ i ] = '\0';
+   *num_keys = key_nr;
 }
+
 
 void kv_store_example( )
 {
@@ -125,7 +120,7 @@ void kv_store_example( )
 
    printf( "\nGet %d Keys\n\n", NR_ENTRY );
 
-   /** each rank gets 10 keys */
+   /** each rank gets NR_ENTRY keys */
    for ( i = 0; i < NR_ENTRY; i++ )
    {
       daos_size_t size;
@@ -147,27 +142,42 @@ void kv_store_example( )
       memset( rbuf, 0, BUFLEN );
    }
 
-   int num_keys = 0;
+   int nr_keys = 0;
 
-   /** enumerate all keys */
-   //list_keys( oh, &num_keys );
-   //ASSERT( num_keys == KEYS * rankn, "KV enumerate failed" );
+   list_keys( oh, &nr_keys );
+   printf("\nnumber of present keys : %d\n\n", nr_keys);
 
-   /** each rank removes a key */
+   printf("Removing key : %s\n\n", key[4]);
 
-   /*rc = daos_kv_remove( oh, DAOS_TX_NONE, 0, key1, NULL );
-      ASSERT( rc == 0, "KV remove failed with %d", rc );*/
+   rc = daos_kv_remove( oh, DAOS_TX_NONE, 0, key[4], NULL );
+   ASSERT( rc == 0, "KV remove failed with %d", rc );
 
-   /** enumerate all keys */
+   list_keys( oh, &nr_keys );
+   printf("Number of keys after removal : %d\n\n", nr_keys);
 
-/*    list_keys( oh, &num_keys );
-   ASSERT( num_keys == ( KEYS - 1 ) * rankn,
-           "KV enumerate after remove failed" ); */
+   for ( i = 0; i < NR_ENTRY; i++ )
+   {
+      daos_size_t size;
+
+      rc = daos_kv_get( oh, DAOS_TX_NONE, 0, key[ i ], &size, NULL, NULL );
+      if(size == 0){
+         printf("KV get failed for %s\n", key[i]);
+         continue;
+      }
+      rc = daos_kv_get( oh, DAOS_TX_NONE, 0, key[ i ], &size, rbuf, NULL );
+      
+      printf("Get key is %s : rbuf is : %s\n",key[i], rbuf);
+      if(( memcmp( val[ i ], rbuf, BUFLEN ) != 0 )){
+         ASSERT( 0, "Data verification" );
+      }
+
+      memset( rbuf, 0, BUFLEN );
+   }
 
    daos_kv_close( oh, NULL );
 
    if ( rank == 0 )
-      printf( "SUCCESS\n" );
+      printf( "\n::SUCCESS::\n\n" );
 }
 
 int main( int argc, char **argv )
