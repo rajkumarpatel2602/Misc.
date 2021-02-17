@@ -34,13 +34,13 @@ enum
 };
 
 #define ENUM_DESC_BUF 512
-#define ENUM_DESC_NR  5
+#define ENUM_DESC_NR  3
 
 
 /** What to write to the object */
 #define NR_ENTRY 7
 
-char *key[ NR_ENTRY ] = { "key1", "key2", "key3", "key4", "key5", "key6", "key7"};
+char *key[ NR_ENTRY ] = { "key1111", "key2", "key3", "key4", "key5", "key6", "key7"};
 char *val[ NR_ENTRY ] = { "val1", "val2", "val3", "val4", "val5", "val6", "val7"};
 
 #define BUFLEN sizeof(val[0])
@@ -66,10 +66,20 @@ static void list_keys( daos_handle_t oh, int *num_keys )
       int      rc;
 
       memset( buf, 0, ENUM_DESC_BUF );
-      rc = daos_kv_list( oh, DAOS_TX_NONE, &nr, kds, &sgl, &anchor,
+      rc = daos_kv_list( oh, DAOS_TX_NONE, &nr, kds, &sgl, &anchor,\
                          NULL );
-      ASSERT( rc == 0, "KV list failed with %d", rc );
 
+      ASSERT( rc == 0, "KV list failed with %d", rc );
+            
+      printf("keys are : %s and buffere len is %d, iov len is %d\n", (sgl.sg_iovs)->iov_buf, (sgl.sg_iovs)->iov_buf_len, (sgl.sg_iovs)->iov_len);
+
+        //printf("key is of lenght %d, and value type %d\n", \
+         kds[0].kd_key_len, kds[0].kd_val_type);
+
+         printf("key is : %s", key);
+      // again get it.
+
+      printf("iteration buffer %s\n", anchor.da_buf);
       if ( nr == 0 )
          continue;
 
